@@ -1,9 +1,10 @@
 <script setup>
-const sitemaps = [
+const activeItem = ref('');
+const menus = [
   {
     title: 'ข่าวสาร',
     link: 'https://google.com',
-    secondaries: [
+    subMenu: [
       { title: 'ข่าวเกี่ยวกับหอการค้าไทย', link: 'https://google.com' },
       { title: 'คลังความรู้ธุรกิจ', link: 'https://google.com' },
       { title: 'ข่าวฝากประชาสัมพันธ์', link: 'https://google.com' },
@@ -14,7 +15,7 @@ const sitemaps = [
   {
     title: 'กิจกรรม',
     link: 'https://google.com',
-    secondaries: [
+    subMenu: [
       { title: 'งานแสดงสินค้าและจับคู่ธุรกิจ', link: 'https://google.com' },
       { title: 'กิจกรรมพัฒนาผู้ประกอบการ', link: 'https://google.com' },
       { title: 'กิจกรรมเพื่อสังคม', link: 'https://google.com' },
@@ -27,7 +28,7 @@ const sitemaps = [
   {
     title: 'บริการ',
     link: 'https://google.com',
-    secondaries: [
+    subMenu: [
       { title: 'APEC Card', link: 'https://google.com' },
       { title: 'CO/Legalization ', link: 'https://google.com' },
       { title: 'ATA Carnet', link: 'https://google.com' },
@@ -39,7 +40,7 @@ const sitemaps = [
   {
     title: 'สิทธิประโยชน์',
     link: 'https://google.com',
-    secondaries: [
+    subMenu: [
       { title: 'TCC Connect', link: 'https://google.com' },
       { title: 'แหล่งเงินทุน', link: 'https://google.com' },
       {
@@ -53,7 +54,7 @@ const sitemaps = [
   {
     title: 'เกี่ยวกับเรา',
     link: 'https://google.com',
-    secondaries: [
+    subMenu: [
       { title: 'นโยบายหลัก', link: 'https://google.com' },
       { title: 'โครงสร้างองค์กร', link: 'https://google.com' },
       { title: 'เครือข่าย', link: 'https://google.com' },
@@ -68,7 +69,7 @@ const sitemaps = [
   {
     title: 'ติดต่อเรา',
     link: 'https://google.com',
-    secondaries: [
+    subMenu: [
       { title: 'ที่อยู่', link: 'https://google.com' },
       { title: 'Google maps', link: 'https://google.com' },
       { title: 'Social media', link: 'https://google.com' },
@@ -78,7 +79,7 @@ const sitemaps = [
   {
     title: 'สมัครสมาชิก ',
     link: 'https://google.com',
-    secondaries: [
+    subMenu: [
       { title: 'หน้ารวมการสมัครสมาชิก', link: 'https://google.com' },
       { title: 'ประเภทสมาชิก', link: 'https://google.com' },
       { title: 'สิทธิประโยชน์', link: 'https://google.com' },
@@ -90,26 +91,40 @@ const sitemaps = [
     ],
   },
 ];
+
+const openMenu = (item) => {
+  activeItem.value = item.title;
+};
+
+const closeMenu = () => {
+  activeItem.value = '';
+};
 </script>
 
 <template>
   <main class="container mx-auto">
-    <nav class="p-3 bg-gray-200">
-      <ul class="flex gap-10 justify-center">
-        <li
-          v-for="item in sitemaps"
-          :key="item"
-          class="relative"
-        >
+    <nav>
+      <ul
+        class="flex gap-10 justify-center p-3 bg-gray-300 relative"
+        @mouseleave="closeMenu()"
+      >
+        <li v-for="item in menus" :key="item">
           <NuxtLink
             :to="item.link"
             target="_blank"
+            @mouseover="openMenu(item)"
             >{{ item.title }}</NuxtLink
           >
+
+          <div
+            v-if="activeItem === item.title"
+            class="bg-red-200 w-full h-100 absolute left-0 top-12 p-3"
+            @mouseover="openMenu(item)"
+          >
+            {{ item.title }}
+          </div>
         </li>
       </ul>
     </nav>
-
-    <div class="bg-red-200 w-full h-100">sitemaps</div>
   </main>
 </template>
