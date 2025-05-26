@@ -121,7 +121,11 @@ const closeMenu = () => {
             class="bg-red-200 w-full h-100 absolute left-0 top-12 p-3"
             @mouseover="openMenu(item)"
           >
-            {{ item.title }}
+            <div v-for="subMenu in item.subMenu" :key="subMenu.title">
+              <NuxtLink :to="subMenu.link" target="_blank">
+                {{ subMenu.title }}</NuxtLink
+              >
+            </div>
           </div>
         </li>
       </ul>
